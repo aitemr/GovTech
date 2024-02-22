@@ -1,18 +1,13 @@
-//
-//  ViewController.swift
-//  GovTech
-//
-//  Created by Islam Temirbek on 22.02.2024.
-//
-
 import UIKit
 import WebKit
 
-class ViewController: UIViewController {
+final class ViewController: UIViewController {
 
+    // MARK: - UI
+    
     private lazy var webView: WKWebView = {
         let contentController = WKUserContentController()
-        contentController.add(self, name: "toggleMessageHandler")
+        contentController.add(self, name: "tokenUpdateHandler")
 
         let preferences = WKPreferences()
         preferences.javaScriptCanOpenWindowsAutomatically = true
@@ -20,9 +15,9 @@ class ViewController: UIViewController {
             var _selector = document.querySelector('input[name=myCheckbox]');
             _selector.addEventListener('change', function(event) {
                 var message = (_selector.checked) ? "Toggle Switch is on" : "Toggle Switch is off";
-                if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.toggleMessageHandler) {
-                    window.webkit.messageHandlers.toggleMessageHandler.postMessage({
-                        "message": message
+                if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.tokenUpdateHandler) {
+                    window.webkit.messageHandlers.tokenUpdateHandler.postMessage({
+                        "needsToUpadteToken": message
                     });
                 }
             });
@@ -38,6 +33,8 @@ class ViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,13 +60,15 @@ class ViewController: UIViewController {
     }
 }
 
+// MARK: - WKScriptMessageHandler
+
 extension ViewController: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         guard let dict = message.body as? [String : AnyObject] else {
             return
         }
 
-        guard let message = dict["message"] else {
+        guard let message = dict["needsToUpadteToken"] else {
             return
         }
 

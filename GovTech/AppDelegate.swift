@@ -1,16 +1,7 @@
-//
-//  AppDelegate.swift
-//  GovTech
-//
-//  Created by Islam Temirbek on 22.02.2024.
-//
-
 import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
