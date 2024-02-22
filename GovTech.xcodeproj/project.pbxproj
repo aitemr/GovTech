@@ -13,6 +13,7 @@
 		6DDAE3802B86FCA900A1327F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DDAE37E2B86FCA900A1327F /* Main.storyboard */; };
 		6DDAE3822B86FCAC00A1327F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6DDAE3812B86FCAC00A1327F /* Assets.xcassets */; };
 		6DDAE3852B86FCAC00A1327F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DDAE3832B86FCAC00A1327F /* LaunchScreen.storyboard */; };
+		6DDAE38D2B86FD8400A1327F /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 6DDAE38C2B86FD8400A1327F /* index.html */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		6DDAE3812B86FCAC00A1327F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6DDAE3842B86FCAC00A1327F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6DDAE3862B86FCAC00A1327F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6DDAE38C2B86FD8400A1327F /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 		6DDAE3772B86FCA900A1327F /* GovTech */ = {
 			isa = PBXGroup;
 			children = (
+				6DDAE38C2B86FD8400A1327F /* index.html */,
 				6DDAE3782B86FCA900A1327F /* AppDelegate.swift */,
 				6DDAE37A2B86FCA900A1327F /* SceneDelegate.swift */,
 				6DDAE37C2B86FCA900A1327F /* ViewController.swift */,
@@ -126,6 +129,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6DDAE3852B86FCAC00A1327F /* LaunchScreen.storyboard in Resources */,
+				6DDAE38D2B86FD8400A1327F /* index.html in Resources */,
 				6DDAE3822B86FCAC00A1327F /* Assets.xcassets in Resources */,
 				6DDAE3802B86FCA900A1327F /* Main.storyboard in Resources */,
 			);
