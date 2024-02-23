@@ -2,33 +2,20 @@ import UIKit
 import WebKit
 
 final class ViewController: UIViewController {
-
+    
     // MARK: - UI
     
     private lazy var webView: WKWebView = {
         let contentController = WKUserContentController()
-        contentController.add(self, name: "tokenUpdateHandler")
-
+        contentController.add(self, name: "requestHandler")
+        
         let preferences = WKPreferences()
         preferences.javaScriptCanOpenWindowsAutomatically = true
-        let js = """
-            var _selector = document.querySelector('input[name=myCheckbox]');
-            _selector.addEventListener('change', function(event) {
-                var message = (_selector.checked) ? "Toggle Switch is on" : "Toggle Switch is off";
-                if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.tokenUpdateHandler) {
-                    window.webkit.messageHandlers.tokenUpdateHandler.postMessage({
-                        "needsToUpadteToken": message
-                    });
-                }
-            });
-        """
-
-        let script = WKUserScript(source: js, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
+        
         let config = WKWebViewConfiguration()
         config.userContentController = contentController
         config.preferences = preferences
-        config.userContentController.addUserScript(script)
-
+        
         let view = WKWebView(frame: .zero, configuration: config)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -55,8 +42,8 @@ final class ViewController: UIViewController {
     
     private func loadWebView() {
         if let url = Bundle.main.url(forResource: "index", withExtension: "html") {
-               webView.loadFileURL(url, allowingReadAccessTo: url.deletingLastPathComponent())
-           }
+            webView.loadFileURL(url, allowingReadAccessTo: url.deletingLastPathComponent())
+        }
     }
 }
 
@@ -64,23 +51,14 @@ final class ViewController: UIViewController {
 
 extension ViewController: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        guard let dict = message.body as? [String : AnyObject] else {
-            return
-        }
-
-        guard let message = dict["needsToUpadteToken"] else {
-            return
-        }
-
-        let script = "document.getElementById('value').innerText = \"\(message)\""
-
-        webView.evaluateJavaScript(script) { (result, error) in
-            if let result = result {
-                print("Label is updated with message: \(result)")
-            } else if let error = error {
-                print("An error occurred: \(error)")
-            }
+        print(message.body)
+        if let message = message.body as? String {
+            sendResponseToJavaScriptHandler(message: message)
         }
     }
+    
+    func sendResponseToJavaScriptHandler(message: String) {
+        let script = "window.postMessage('\(message)', '*');"
+        webView.evaluateJavaScript(script, completionHandler: nil)
+    }
 }
-
