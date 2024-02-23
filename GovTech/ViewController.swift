@@ -51,14 +51,42 @@ final class ViewController: UIViewController {
 
 extension ViewController: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        print(message.body)
         if let message = message.body as? String {
-            sendResponseToJavaScriptHandler(message: message)
+            if let jsonData = message.data(using: .utf8) {
+                do {
+                    // Decode JSON data into ResponseData object
+                    let responseData = try JSONDecoder().decode(ResponseData.self, from: jsonData)
+
+                    if responseData.type == "getAcessToken" {
+                        print(message)
+                        let model = ResponseData(requestId: responseData.requestId,
+                                                 type: "receiveToken",
+                                                 payload: ResponseData.Payload(token: UUID().uuidString))
+                        
+                        sendResponseToJavaScriptHandler(message: model)
+                    }
+                } catch {
+                    print("Error parsing JSON: \(error)")
+                }
+            }
         }
     }
     
-    func sendResponseToJavaScriptHandler(message: String) {
-        let script = "window.postMessage('\(message)', '*');"
-        webView.evaluateJavaScript(script, completionHandler: nil)
+    func sendResponseToJavaScriptHandler(message: ResponseData) {
+        do {
+            // Encode the Codable struct instance to JSON data
+            let jsonData = try JSONEncoder().encode(message)
+            
+            // Convert JSON data to a string
+            if let message = String(data: jsonData, encoding: .utf8) {
+                let script = "window.postMessage('\(message)', '*');"
+                webView.evaluateJavaScript(script, completionHandler: nil)
+                
+            } else {
+                print("Failed to convert JSON data to string.")
+            }
+        } catch {
+            print("Error encoding JSON: \(error)")
+        }
     }
 }

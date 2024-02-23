@@ -25,7 +25,7 @@
             var _selector = document.querySelector('input[name=myCheckbox]');
             _selector.addEventListener('change', function(event) {
                 var message = (_selector.checked) ? "Toggle Switch is on" : "Toggle Switch is off";
-                sendMessageToMobile('getToken', '{}')
+                sendMessageToMobile('getAcessToken', '{}')
                 .then(response => {
                     console.log('Received response:', response);
                 })
@@ -50,8 +50,6 @@
                         let messageFromMobile = JSON.parse(data);
 
                         if (requestId === messageFromMobile.requestId) {
-                            console.log("requestId:",  requestId);
-                            console.log('Received message from iOS ', messageFromMobile);
                             resolve(messageFromMobile);
                         };
                         
